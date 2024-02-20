@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "food"
+version = "0.1.0"
+description = ""
+authors = ["HannaStarovoy <starovoitanya@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.2"
+pillow = "^10.2.0"
+django-ckeditor = "^6.7.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
