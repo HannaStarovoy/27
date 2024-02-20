@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
 
-from .forms import RecipeForm
-from .models import Recipe
+from .forms import RecipeForm, IngredientForm
+from .models import Recipe, Ingredient
 
 
 def home(request: WSGIRequest):
@@ -27,3 +27,19 @@ def create_recipe(request: WSGIRequest):
             return HttpResponseRedirect("/")
 
     return render(request, 'recipe-form.html', {'form': form})
+
+@login_required
+def create_ingredient(request: WSGIRequest):
+    form = IngredientForm()
+
+    if request.method == 'POST':
+        form = IngredientForm(request.POST, request.FILES)  # Файлы находятся отдельно!
+        if form.is_valid():
+            ingredient: Ingredient = form.save(commit=False)  # Не сохранять в базу рецепт, а вернуть его объект.
+            ingredient.user = request.user
+            ingredient.save()  # Сохраняем в базу объект.
+            form.save_m2m()  # Сохраняем отношения many to many для ингредиентов и рецепта.
+
+            return HttpResponseRedirect("/")
+
+    return render(request, "create-ingredient.html", {"form": form})

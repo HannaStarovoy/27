@@ -5,10 +5,12 @@ from django.db import models
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
+    calories = models.FloatField(verbose_name='Калорийность',  default=0)
+    description = models.TextField(verbose_name="Описание", null=True)
+
 
     def __str__(self):
         return self.name
-
 
 class Recipe(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название рецепта")
